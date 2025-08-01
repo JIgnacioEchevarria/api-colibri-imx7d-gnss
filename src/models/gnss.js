@@ -18,6 +18,12 @@ export class GnssModel {
 
         const opened = await this.openPort()
 
+        /**
+         * Solo prueba LOCAL:
+         * Hasta agregar NodeJS a la imagen Linux de la Colibri, nos conectamos via SSH para leer UART B
+         * Ya que al estar corriendo en mi pc de desarrollo, el path /dev/colibri-uartb no existe.
+         * Una vez que se agreguen los paquetes necesarios para correr NodeJS en la Colibri esto sera modificado.
+         */
         if (!opened) {
             await this.connectSsh('192.168.0.177', 'root', 10)
         }
