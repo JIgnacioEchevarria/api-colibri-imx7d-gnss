@@ -32,7 +32,7 @@ export class GnssModel {
     }
 
     async openPort () {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             if (this.port && this.port.isOpen) {
                 return resolve(true)
             }
@@ -40,7 +40,7 @@ export class GnssModel {
             this.port = new SerialPort({ path: this.path, baudRate: this.baudRate }, (err) => {
                 if (err) {
                     console.error('Error abriendo puerto:', err.message);
-                    return resolve(false);
+                    return reject(false);
                 }
                 resolve(true);
             })
@@ -67,7 +67,7 @@ export class GnssModel {
                 conn.exec('./uart_ttl_mode.sh && cat /dev/colibri-uartb', (err, stream) => {
                     if (err) {
                         conn.end()
-                        return reject(err)
+                        return reject(false)
                     }
 
                     stream.on('data', (data) => {
@@ -85,7 +85,7 @@ export class GnssModel {
                             if (this.lines.length >= linesToRead) {
                                 stream.close()
                                 conn.end()
-                                return resolve('err')
+                                return resolve(true)
                             }
                         }
                     })
