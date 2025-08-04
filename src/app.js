@@ -6,6 +6,8 @@ const app = express()
 
 const gnssModelInstance = new GnssModel()
 
+app.use(express.json())
+
 app.use('/api/gnss', createGnssRouter({ gnssModel: gnssModelInstance }))
 
 export default app
