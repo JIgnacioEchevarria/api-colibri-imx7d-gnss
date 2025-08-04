@@ -7,6 +7,7 @@ export const createGnssRouter = ({ gnssModel }) => {
     const gnssController = new GnssController({ gnssModel })
 
     gnssRouter.get('/', gnssController.getAll)
+    gnssRouter.post('/', gnssController.readAll)
 
     return gnssRouter
 }

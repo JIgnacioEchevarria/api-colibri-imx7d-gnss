@@ -11,4 +11,12 @@ export class GnssController {
             console.error(error)
         }
     }
+
+    readAll = async (req, res) => {
+        try {
+            return res.status(201).json({ status: 201, message: 'Body recibido', data: req.body });
+        } catch (error) {
+            console.error(error)
+        }
+    }
 }
