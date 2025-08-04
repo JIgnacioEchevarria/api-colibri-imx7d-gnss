@@ -18,15 +18,7 @@ export class GnssModel {
 
         const opened = await this.openPort()
 
-        /**
-         * Solo prueba LOCAL:
-         * Hasta agregar NodeJS a la imagen Linux de la Colibri, nos conectamos via SSH para leer UART B
-         * Ya que al estar corriendo en mi pc de desarrollo, el path /dev/colibri-uartb no existe.
-         * Una vez que se agreguen los paquetes necesarios para correr NodeJS en la Colibri esto sera modificado.
-         */
-        if (!opened) {
-            await this.connectSsh('192.168.0.177', 'root', 10)
-        }
+        if (!opened) console.log('Error opening port')
 
         return this.lines
     }
@@ -54,45 +46,6 @@ export class GnssModel {
 
             this.port.on('error', (err) => {
                 console.error('UART error: ', err.message)
-            })
-        })
-    }
-
-    async connectSsh (ip = '192.168.0.177', user = 'root', linesToRead = 10) {
-        return new Promise((resolve, reject) => {
-            const conn = new Client()
-            let buffer = ''
-
-            conn.on('ready', () => {
-                conn.exec('./uart_ttl_mode.sh && cat /dev/colibri-uartb', (err, stream) => {
-                    if (err) {
-                        conn.end()
-                        return reject(false)
-                    }
-
-                    stream.on('data', (data) => {
-                        buffer += data.toString()
-
-                        const parts = buffer.split('\n')
-
-                        buffer = parts.pop()
-
-                        for (const line of parts) {
-                            if (line.trim().startsWith('$')) {
-                                this.lines.push(line.trim())
-                            }
-
-                            if (this.lines.length >= linesToRead) {
-                                stream.close()
-                                conn.end()
-                                return resolve(true)
-                            }
-                        }
-                    })
-                })
-            }).connect({
-                host: ip,
-                username: user
             })
         })
     }
