@@ -2,7 +2,7 @@ import Database from 'better-sqlite3'
 
 export class GnssModel {
     constructor() {
-        const db = new Database('gnssDatabase')
+        this.db = new Database('gnssDatabase')
         this.db.prepare(`
             CREATE TABLE IF NOT EXISTS gngga (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
