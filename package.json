@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "better-sqlite3": "^12.2.0",
     "express": "5.1.0",
     "serialport": "13.0.0",
     "ssh2": "1.16.0"
