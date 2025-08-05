@@ -1,8 +1,16 @@
 import Database from 'better-sqlite3'
+import fs from 'fs'
+import path from 'path'
 
 export class GnssModel {
     constructor() {
-        this.db = new Database('gnssDatabase')
+        const dbFolder = path.resolve('db')
+        const dbPath = path.join(dbFolder, 'gnssDatabase.db')
+
+        fs.mkdirSync(dbFolder, { recursive: true })
+
+        this.db = new Database(dbPath)
+
         this.db.prepare(`
             CREATE TABLE IF NOT EXISTS gngga (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
