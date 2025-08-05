@@ -3,21 +3,12 @@ export class GnssController {
         this.gnssModel = gnssModel
     }
 
-    getAll = async (req, res) => {
-        try {
-            const data = await this.gnssModel.getAll(10, 2000)
-            return res.status(200).json({ status: 200, message: 'Success', data })
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    readAll = async (req, res) => {
+    updateGnssData = async (req, res) => {
         try {
             console.log(req.body)
-            return res.status(201).json({ status: 201, message: 'Body recibido' });
+            return res.status(201).json({ status: 201, message: 'Gnss data received.' });   
         } catch (error) {
-            console.error(error)
+            return res.status(422).json({ status: 422, message: 'Invalid Gnss data.' })
         }
     }
 }
